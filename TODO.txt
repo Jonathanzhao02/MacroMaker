@@ -1,0 +1,8 @@
+Add main application window (settings, view macro waypoints in list)
+Add waypoint visual mapping and editing
+Add savable macros
+Add failsafe for macro editing macros list, disable or minimize UI?
+Add new macro button?
+
+Make macros scalable? (i.e. mouse moves on screen dims multiplied by values 0-1)
+Make macro out of jpg?
