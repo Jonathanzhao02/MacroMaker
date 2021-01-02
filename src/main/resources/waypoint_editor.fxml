@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<Pane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.impls.objects.controllers.WaypointEditMenuController">
+   <children>
+      <VBox layoutX="1.0" prefHeight="400.0" prefWidth="600.0">
+         <children>
+            <Label alignment="CENTER" prefHeight="20.0" prefWidth="606.0" text="Location">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <HBox alignment="CENTER" prefHeight="50.0" prefWidth="600.0" spacing="20.0">
+               <children>
+                  <Label text="X:" />
+                  <TextField fx:id="xTextField" />
+                  <Label text="Y:" />
+                  <TextField fx:id="yTextField" />
+               </children>
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+            </HBox>
+            <Label alignment="CENTER" layoutX="10.0" layoutY="55.0" prefHeight="20.0" prefWidth="606.0" text="Delay">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <HBox alignment="CENTER" layoutX="10.0" layoutY="75.0" prefHeight="50.0" prefWidth="600.0" spacing="20.0">
+               <children>
+                  <Label text="Duration:" />
+                  <TextField fx:id="durationTextField" />
+                  <Label layoutX="122.0" layoutY="27.0" text="Delay:" />
+                  <TextField fx:id="delayTextField" layoutX="221.0" layoutY="23.0" />
+               </children>
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+            </HBox>
+            <Label alignment="CENTER" layoutX="10.0" layoutY="100.0" prefHeight="20.0" prefWidth="606.0" text="Mouse Buttons (Down)">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <HBox alignment="CENTER" layoutX="10.0" layoutY="120.0" prefHeight="50.0" prefWidth="600.0" spacing="20.0">
+               <children>
+                  <CheckBox fx:id="leftClickCheckBox" mnemonicParsing="false" text="Left Click" />
+                  <CheckBox fx:id="middleClickCheckBox" layoutX="274.0" layoutY="20.0" mnemonicParsing="false" text="Middle Click" />
+                  <CheckBox fx:id="rightClickCheckBox" layoutX="227.0" layoutY="20.0" mnemonicParsing="false" text="Right Click" />
+                  <CheckBox fx:id="forwardClickCheckBox" layoutX="274.0" layoutY="20.0" mnemonicParsing="false" text="Forward Click" />
+                  <CheckBox fx:id="backClickCheckBox" layoutX="227.0" layoutY="20.0" mnemonicParsing="false" text="Back Click" />
+               </children>
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+            </HBox>
+            <Label alignment="CENTER" layoutX="10.0" layoutY="142.0" prefHeight="20.0" prefWidth="606.0" text="Mouse Buttons (Release)">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <HBox alignment="CENTER" layoutX="10.0" layoutY="162.0" prefHeight="50.0" prefWidth="600.0" spacing="20.0">
+               <children>
+                  <CheckBox fx:id="leftReleaseCheckBox" mnemonicParsing="false" text="Left Click" />
+                  <CheckBox fx:id="middleReleaseCheckBox" layoutX="274.0" layoutY="20.0" mnemonicParsing="false" text="Middle Click" />
+                  <CheckBox fx:id="rightReleaseCheckBox" layoutX="227.0" layoutY="20.0" mnemonicParsing="false" text="Right Click" />
+                  <CheckBox fx:id="forwardReleaseCheckBox" layoutX="274.0" layoutY="20.0" mnemonicParsing="false" text="Forward Click" />
+                  <CheckBox fx:id="backReleaseCheckBox" layoutX="227.0" layoutY="20.0" mnemonicParsing="false" text="Back Click" />
+               </children>
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="100.0">
+               <children>
+                  <Button fx:id="cancelButton" mnemonicParsing="false" text="Cancel" />
+                  <Button fx:id="deleteButton" mnemonicParsing="false" text="Delete" />
+                  <Button fx:id="saveButton" alignment="CENTER_RIGHT" mnemonicParsing="false" text="Save" />
+               </children>
+            </HBox>
+            <Label fx:id="errorLabel" alignment="CENTER" layoutX="10.0" layoutY="30.0" prefHeight="141.0" prefWidth="600.0" textFill="RED" wrapText="true" />
+         </children>
+         <padding>
+            <Insets top="20.0" />
+         </padding>
+      </VBox>
+   </children>
+</Pane>
