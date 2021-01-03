@@ -9,7 +9,7 @@ public enum KeySetting {
     ),
     QUIT_KEY(
             NativeKeyEvent.VC_BACKQUOTE,
-            "Hotkey for quitting the program. Basically your emergency exit in case a macro goes rogue."
+            "Hotkey for quitting the program. Basically your emergency exit in case a macro goes rogue.\nWARNING: Will not save macros."
     );
 
     private int val;

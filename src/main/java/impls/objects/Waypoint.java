@@ -1,10 +1,14 @@
 package main.java.impls.objects;
 
 import java.awt.*;
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Waypoint {
+public class Waypoint implements Serializable {
+    @Serial
+    private static final long serialVersionUID = Long.parseLong("123857216");
     private static int delayThreshold;
 
     private Point location;

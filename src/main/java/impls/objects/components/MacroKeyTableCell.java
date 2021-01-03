@@ -17,6 +17,7 @@ public class MacroKeyTableCell extends TableCell<MacroHotkey, String> {
     private Label statusLabel;
 
     public MacroKeyTableCell(Label statusLabel) {
+        super();
         this.statusLabel = statusLabel;
         setOnMouseClicked(e -> {
             if (isEmpty()) return;
@@ -37,14 +38,13 @@ public class MacroKeyTableCell extends TableCell<MacroHotkey, String> {
     }
 
     public void activate() {
-        GlobalScreen.addNativeKeyListener(new SingleKeyListener(k -> {
-            Platform.runLater(() -> {
-                getTableRow().getItem().setKey(k);
+        GlobalScreen.addNativeKeyListener(new SingleKeyListener(
+            (nativeKey, rawKey) -> Platform.runLater(() -> {
+                getTableRow().getItem().setKey(nativeKey);
                 getTableView().refresh();
                 deactivate();
-            });
-            return null;
-        }));
+            })
+        ));
         Platform.runLater(() -> {
             statusLabel.setText(String.format("Editing hotkey for %s", getTableRow().getItem().getName()));
         });
@@ -61,6 +61,11 @@ public class MacroKeyTableCell extends TableCell<MacroHotkey, String> {
     @Override
     protected void updateItem(String item, boolean empty) {
         super.updateItem(item, empty);
-        setText(item == null || item.equals(NativeKeyEvent.getKeyText(NativeKeyEvent.VC_UNDEFINED)) ? "" : item);
+
+        if (item != null && !empty) {
+            setText(item.equals(NativeKeyEvent.getKeyText(NativeKeyEvent.VC_UNDEFINED)) ? "" : item);
+        } else {
+            setText(null);
+        }
     }
 }

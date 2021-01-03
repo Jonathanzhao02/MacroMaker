@@ -8,12 +8,15 @@ import org.jnativehook.mouse.NativeMouseEvent;
 import org.jnativehook.mouse.NativeMouseInputListener;
 
 import java.awt.*;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class WaypointInputListener implements NativeMouseInputListener, NativeKeyListener {
     private List<Waypoint> waypoints;
     private long bufferTime;
+    private Map<Integer, Boolean> keysPressed = new HashMap<>();
 
     public WaypointInputListener() {
         reset();
@@ -90,7 +93,7 @@ public class WaypointInputListener implements NativeMouseInputListener, NativeKe
     @Override
     public void nativeKeyPressed(NativeKeyEvent e) {
         long timestamp = System.currentTimeMillis();
-        if (timestamp < bufferTime) return;
+        if (timestamp < bufferTime || keysPressed.getOrDefault(e.getKeyCode(), false)) return;
         Waypoint waypoint = createWaypoint(timestamp);
         Point mousePos = MouseInfo.getPointerInfo().getLocation();
         waypoint.setLocation(mousePos);
@@ -99,12 +102,13 @@ public class WaypointInputListener implements NativeMouseInputListener, NativeKe
         keys.add(e.getRawCode());
         nativeKeys.add(e.getKeyCode());
         waypoint.setKeys(keys, nativeKeys);
+        keysPressed.put(e.getKeyCode(), true);
     }
 
     @Override
     public void nativeKeyReleased(NativeKeyEvent e) {
         long timestamp = System.currentTimeMillis();
-        if (timestamp < bufferTime) return;
+        if (timestamp < bufferTime || !keysPressed.getOrDefault(e.getKeyCode(), false)) return;
         Waypoint waypoint = createWaypoint(timestamp);
         Point mousePos = MouseInfo.getPointerInfo().getLocation();
         waypoint.setLocation(mousePos);
@@ -113,5 +117,6 @@ public class WaypointInputListener implements NativeMouseInputListener, NativeKe
         keys.add(e.getRawCode());
         nativeKeys.add(e.getKeyCode());
         waypoint.setReleaseKeys(keys, nativeKeys);
+        keysPressed.put(e.getKeyCode(), false);
     }
 }

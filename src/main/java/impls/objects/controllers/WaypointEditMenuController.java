@@ -1,10 +1,19 @@
 package main.java.impls.objects.controllers;
 
+import javafx.application.Platform;
+import javafx.beans.InvalidationListener;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import main.java.impls.objects.Activator;
 import main.java.impls.objects.Waypoint;
+import main.java.impls.objects.components.WaypointKeyCell;
 import main.java.impls.objects.components.WaypointWidget;
 import main.java.impls.objects.events.SelectionEvent;
+import main.java.impls.objects.nativelisteners.SingleKeyListener;
+import org.jnativehook.GlobalScreen;
 
 import java.awt.Point;
 import java.awt.event.MouseEvent;
@@ -65,18 +74,78 @@ public class WaypointEditMenuController {
     @FXML
     public CheckBox backReleaseCheckBox;
 
+    @FXML
+    public ListView<Integer> downKeys;
+
+    @FXML
+    public ListView<Integer> releaseKeys;
+
+    @FXML
+    public Button addDownKeyButton;
+
+    @FXML
+    public Button addReleaseKeyButton;
+
     private Waypoint waypoint;
     private WaypointWidget parent;
     private Map<CheckBox, Integer> boxToClickMap = new HashMap<>();
     private Map<CheckBox, Integer> boxToReleaseMap = new HashMap<>();
 
+    private ObservableList<Integer> nativeDownKeys;
+    private ObservableList<Integer> nativeReleaseKeys;
+
     public void initialize() {
 
     }
 
-    public void initData(Waypoint waypoint, WaypointWidget parent) {
-        // TODO:
-        // FIGURE OUT ADDING PRESS/RELEASE KEYS
+    public void initData(Waypoint waypoint, WaypointWidget parent, Activator inhibitor) {
+        nativeDownKeys = FXCollections.observableArrayList();
+        nativeReleaseKeys = FXCollections.observableArrayList();
+
+        if (waypoint.hasKeys()) {
+            nativeDownKeys.addAll(waypoint.getNativeKeys());
+        }
+
+        if (waypoint.hasReleaseKeys()) {
+            nativeReleaseKeys.addAll(waypoint.getNativeReleaseKeys());
+        }
+
+        downKeys.setCellFactory(v -> {
+            return new WaypointKeyCell();
+        });
+
+        releaseKeys.setCellFactory(v -> {
+            return new WaypointKeyCell();
+        });
+
+        downKeys.setItems(nativeDownKeys);
+        releaseKeys.setItems(nativeReleaseKeys);
+
+        addDownKeyButton.setOnAction(e -> {
+            inhibitor.activate();
+            GlobalScreen.addNativeKeyListener(new SingleKeyListener(
+                (nativeKey, rawKey) -> {
+                    Platform.runLater(() -> {
+                        inhibitor.deactivate();
+                        if (nativeDownKeys.contains(nativeKey)) return;
+                        nativeDownKeys.add(nativeKey);
+                        waypoint.addKey(rawKey, nativeKey);
+                    });
+            }));
+        });
+
+        addReleaseKeyButton.setOnAction(e -> {
+            inhibitor.activate();
+            GlobalScreen.addNativeKeyListener(new SingleKeyListener(
+                (nativeKey, rawKey) -> {
+                    Platform.runLater(() -> {
+                        inhibitor.deactivate();
+                        if (nativeReleaseKeys.contains(nativeKey)) return;
+                        nativeReleaseKeys.add(nativeKey);
+                        waypoint.addReleaseKey(rawKey, nativeKey);
+                    });
+                }));
+        });
 
         this.waypoint = waypoint;
         this.parent = parent;

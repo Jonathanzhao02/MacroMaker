@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.application.Application;
 import javafx.stage.Stage;
+import main.java.impls.objects.controllers.MainController;
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
 
@@ -15,12 +16,17 @@ import java.util.logging.Logger;
 
 public class Main extends Application {
     public void start(Stage primaryStage) throws IOException {
-        Parent primaryRoot = FXMLLoader.load(getClass().getResource("/main/resources/macro_maker_frontend.fxml"));
+        FXMLLoader loader = new FXMLLoader(
+                getClass().getResource("/main/resources/macro_maker_frontend.fxml")
+        );
+        Parent primaryRoot = loader.load();
+        MainController controller = loader.getController();
         primaryStage.setScene(new Scene(primaryRoot));
         primaryStage.show();
         primaryStage.setOnCloseRequest(event -> {
             try {
                 System.out.println("QUITTING");
+                controller.saveMacros();
                 GlobalScreen.unregisterNativeHook();
                 Platform.runLater(() -> {
                     System.exit(0);

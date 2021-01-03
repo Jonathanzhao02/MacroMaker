@@ -11,6 +11,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
+import main.java.impls.objects.Activator;
 import main.java.impls.objects.Waypoint;
 import main.java.impls.objects.controllers.WaypointEditMenuController;
 import main.java.impls.objects.events.SelectionEvent;
@@ -29,12 +30,14 @@ public class WaypointWidget extends Circle {
     private Stage editStage = new Stage();
     private int before;
     private int after;
+    private Activator inhibitor;
 
-    public WaypointWidget(Waypoint waypoint, int before, int after, int x, int y, double r, Color fill) {
+    public WaypointWidget(Waypoint waypoint, int before, int after, int x, int y, double r, Color fill, Activator inhibitor) {
         super(x, y, r, fill);
         this.waypoint = waypoint;
         this.before = before;
         this.after = after;
+        this.inhibitor = inhibitor;
         setCursor(Cursor.HAND);
         setOnContextMenuRequested(e -> {
             waypointEditMenu.show(this, getCenterX(), getCenterY());
@@ -76,8 +79,8 @@ public class WaypointWidget extends Circle {
         });
 
         setOnMouseDragged(e -> {
-            setCenterX(e.getSceneX());
-            setCenterY(e.getSceneY());
+            setCenterX(e.getScreenX());
+            setCenterY(e.getScreenY());
             waypoint.setLocation(new Point((int) e.getScreenX(), (int) e.getScreenY()));
             fireEvent(new ActionEvent());
             e.consume();
@@ -95,7 +98,7 @@ public class WaypointWidget extends Circle {
             editStage.setScene(scene);
 
             WaypointEditMenuController controller = loader.getController();
-            controller.initData(waypoint, this);
+            controller.initData(waypoint, this, inhibitor);
 
             editStage.show();
         } catch (IOException e) {
@@ -106,7 +109,8 @@ public class WaypointWidget extends Circle {
 
     public void closeEditMenu() {
         editStage.close();
-        relocate(waypoint.getX(), waypoint.getY());
+        setCenterX(waypoint.getX());
+        setCenterY(waypoint.getY());
         fireEvent(new ActionEvent());
     }
 }

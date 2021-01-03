@@ -1,15 +1,16 @@
 package main.java.impls.objects.nativelisteners;
 
-import javafx.util.Callback;
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.keyboard.NativeKeyEvent;
 import org.jnativehook.keyboard.NativeKeyListener;
 
-public class SingleKeyListener implements NativeKeyListener {
-    private final Callback<Integer, Void> callback;
+import java.util.function.BiConsumer;
 
-    public SingleKeyListener(Callback<Integer, Void> callback) {
-        this.callback = callback;
+public class SingleKeyListener implements NativeKeyListener {
+    private final BiConsumer<Integer, Integer> consumer;
+
+    public SingleKeyListener(BiConsumer<Integer, Integer> callback) {
+        this.consumer = callback;
     }
 
     @Override
@@ -19,7 +20,7 @@ public class SingleKeyListener implements NativeKeyListener {
 
     @Override
     public void nativeKeyPressed(NativeKeyEvent nativeKeyEvent) {
-        callback.call(nativeKeyEvent.getKeyCode());
+        consumer.accept(nativeKeyEvent.getKeyCode(), nativeKeyEvent.getRawCode());
         GlobalScreen.removeNativeKeyListener(this);
     }
 

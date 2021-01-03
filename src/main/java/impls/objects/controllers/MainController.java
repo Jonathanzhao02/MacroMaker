@@ -1,9 +1,6 @@
 package main.java.impls.objects.controllers;
 
 import javafx.application.Platform;
-import javafx.beans.InvalidationListener;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableStringValue;
 import javafx.collections.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -51,6 +48,9 @@ public class MainController {
 
     @FXML
     public TableView<MacroHotkey> macroTable;
+
+    @FXML
+    public MenuItem saveMenuItem;
 
     private static final UserPreferences preferences = new UserPreferences();
 
@@ -137,15 +137,21 @@ public class MainController {
         NativeEnumMapper.initialize();
 
         // UI Logic
+        saveMenuItem.setOnAction(e -> saveMacros());
+
         macroView = new MacroTableWrapper(macroTable);
         macroView.initialize(inhibitor, leftStatusLabel);
-        macros = FXCollections.observableArrayList();
+        macros = FXCollections.observableArrayList(MacroHotkey.load());
         macroTable.setItems(macros);
+
+        // Deserialization
+        for (MacroHotkey macro : macros) {
+            hotkeyKeyListener.setHotkey(macro);
+        }
 
         // TODO:
         // MACRO PIPING?
         // BETTER SETTINGS SETTING (more intuitive, new scene entirely?)
-        // on loading macros from file, initialize settings, transient properties
 
         macros.addListener((ListChangeListener<? super MacroHotkey>) c -> {
             Platform.runLater(() -> macroEditorBox.getChildren().clear());
@@ -169,7 +175,7 @@ public class MainController {
                     editMenu.prefHeightProperty().bind(macroEditorBox.heightProperty());
 
                     MacroEditMenuController controller = loader.getController();
-                    controller.initData(current);
+                    controller.initData(current, inhibitor);
 
                     editMenu.addEventHandler(ActionEvent.ANY, event -> {
                         current.setKey(-1);
@@ -207,7 +213,7 @@ public class MainController {
                 leftStatusLabel.setText("Now editing hotkey for " + name);
                 inhibitor.activate();
                 GlobalScreen.addNativeKeyListener(new SingleKeyListener(
-                    key -> {
+                    (nativeKey, rawKey) -> {
 
                         try {
                             Thread.sleep(500);
@@ -217,11 +223,10 @@ public class MainController {
 
                         Platform.runLater(() -> {
                             inhibitor.deactivate();
-                            preferences.setKeySetting(setting, key);
+                            preferences.setKeySetting(setting, nativeKey);
                             leftStatusLabel.setText("");
-                            field.setText(NativeKeyEvent.getKeyText(key));
+                            field.setText(NativeKeyEvent.getKeyText(nativeKey));
                         });
-                        return null;
                     }
                 ));
             });
@@ -299,5 +304,15 @@ public class MainController {
         // Finishing up
         GlobalScreen.addNativeKeyListener(hotkeyKeyListener);
         System.out.println("Initialized!");
+    }
+
+    public void saveMacros() {
+        for (MacroHotkey macro : macros) {
+            MacroHotkey.save(macro);
+        }
+    }
+
+    public void loadMacros() {
+
     }
 }

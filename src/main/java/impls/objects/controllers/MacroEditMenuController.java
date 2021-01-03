@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import main.java.impls.enums.MacroMode;
+import main.java.impls.objects.Activator;
 import main.java.impls.objects.MacroDisplay;
 import main.java.impls.objects.hotkeys.MacroHotkey;
 
@@ -36,7 +37,7 @@ public class MacroEditMenuController {
 
     }
 
-    public void initData(MacroHotkey macro) {
+    public void initData(MacroHotkey macro, Activator inhibitor) {
         this.macro = macro;
         nameLabel.setText(macro.getName());
 
@@ -62,7 +63,7 @@ public class MacroEditMenuController {
         });
 
         editButton.setOnAction(e -> {
-            MacroDisplay display = new MacroDisplay();
+            MacroDisplay display = new MacroDisplay(inhibitor);
             display.displayMacro(this.macro);
             e.consume();
         });

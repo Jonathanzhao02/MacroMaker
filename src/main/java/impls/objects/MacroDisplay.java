@@ -14,7 +14,6 @@ import main.java.impls.objects.hotkeys.MacroHotkey;
 
 import java.awt.*;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -24,13 +23,15 @@ public class MacroDisplay {
     private DrawCanvas canvas;
     private Group root;
     private MacroHotkey macro;
+    private Activator inhibitor;
 
     public static void setDisplayInterval(double interval) {
         displayInterval = interval;
     }
 
-    public MacroDisplay() {
+    public MacroDisplay(Activator inhibitor) {
         super();
+        this.inhibitor = inhibitor;
         initialize();
         canvas.setOnMouseClicked(e -> {
             if (e.getButton() == MouseButton.PRIMARY && e.getClickCount() == 2) {
@@ -40,6 +41,7 @@ public class MacroDisplay {
 
                 stage.close();
                 macro = null;
+                inhibitor.deactivate();
             }
         });
     }
@@ -67,8 +69,6 @@ public class MacroDisplay {
         root.getChildren().setAll(canvas);
 
         // TODO:
-        // VISUAL EDITING
-        // IMPROVE WAYPOINT DISPLAY
         // add table of waypoints, selection pushes selected waypoint to front
         // add border around selected waypoint
 
@@ -83,7 +83,16 @@ public class MacroDisplay {
         for (int i = 0; i < waypoints.size(); i++) {
             Waypoint wp = waypoints.get(i);
 
-            WaypointWidget widget = new WaypointWidget(wp, i - 1, i + 1 < waypoints.size() ? i + 1 : -1, (int) wp.getX(), (int) wp.getY(), 3, gradient.getVal((double) i / waypoints.size()));
+            WaypointWidget widget = new WaypointWidget(
+                    wp,
+                    i - 1,
+                    i + 1 < waypoints.size() ? i + 1 : -1,
+                    (int) wp.getX(),
+                    (int) wp.getY(),
+                    3,
+                    gradient.getVal((double) i / waypoints.size()),
+                    inhibitor
+            );
             root.getChildren().add(widget);
             widget.addEventHandler(SelectionEvent.SELECTION_EVENT, e -> {
                 if (e.getObject().getClass() == Waypoint.class) {

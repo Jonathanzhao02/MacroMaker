@@ -6,8 +6,11 @@ import main.java.impls.utils.MacroUtils;
 
 import java.awt.*;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class MacroHotkey extends Hotkey implements Serializable {
@@ -46,6 +49,61 @@ public class MacroHotkey extends Hotkey implements Serializable {
         super(key);
         this.loops = 1;
         setWaypoints(waypoints);
+    }
+
+    public static List<MacroHotkey> load() {
+        List<MacroHotkey> macros = new LinkedList<>();
+        String fileName = System.getProperty("user.home") +
+                File.separator + "AppData" +
+                File.separator + "local" +
+                File.separator + "MacroMaker";
+
+        File[] files = new File(fileName).listFiles();
+
+        try {
+            if (files == null) return macros;
+            for (File file : files) {
+                FileInputStream fin = new FileInputStream(file.getAbsoluteFile());
+                ObjectInputStream oin = new ObjectInputStream(fin);
+                macros.add((MacroHotkey) oin.readObject());
+                oin.close();
+                fin.close();
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return macros;
+    }
+
+    public static void save(MacroHotkey macro) {
+        String fileName = System.getProperty("user.home") +
+                File.separator + "AppData" +
+                File.separator + "local" +
+                File.separator + "MacroMaker";
+        try {
+
+            if (!Files.exists(Paths.get(fileName))) {
+                Files.createDirectory(
+                        Paths.get(fileName)
+                );
+            }
+
+            fileName += File.separator + macro.id.toString() + ".macro";
+
+            Files.deleteIfExists(Paths.get(fileName));
+            Files.createFile(
+                    Paths.get(fileName)
+            );
+
+            FileOutputStream fout = new FileOutputStream(fileName);
+            ObjectOutputStream oout = new ObjectOutputStream(fout);
+            oout.writeObject(macro);
+            oout.close();
+            fout.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void initialize() {
