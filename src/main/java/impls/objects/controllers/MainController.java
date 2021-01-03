@@ -35,9 +35,6 @@ public class MainController {
     public Pane macroEditorBox;
 
     @FXML
-    public ScrollPane macrosBox;
-
-    @FXML
     public GridPane settingsBox;
 
     @FXML
@@ -86,7 +83,7 @@ public class MainController {
                 List<Waypoint> waypoints = macroRecorder.deactivate();
                 waypoints = MacroUtils.preprocess(waypoints, preferences.getDoubleSetting(DoubleSetting.EPSILON));
 
-                if (macros != null && !waypoints.isEmpty()) {
+                if (macros != null && waypoints.size() > 2) {
                     MacroHotkey macroHotkey = new MacroHotkey(NativeKeyEvent.VC_UNDEFINED, waypoints);
                     String defaultName = "default";
                     var ref = new Object() {

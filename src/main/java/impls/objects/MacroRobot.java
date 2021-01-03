@@ -14,17 +14,17 @@ public class MacroRobot extends Robot {
     }
 
     public void activate(Waypoint waypoint, MacroMode mode) {
-        if (waypoint.hasLocation() && mode != MacroMode.KEYS_ONLY) {
+        if (waypoint.hasLocation() && (mode == MacroMode.ALL || mode == MacroMode.MOUSE_ONLY)) {
             mouseMove((int) waypoint.getX(), (int) waypoint.getY());
         }
 
-        if (waypoint.hasKeys() && mode != MacroMode.MOUSE_ONLY) {
+        if (waypoint.hasKeys() && (mode == MacroMode.ALL || mode == MacroMode.KEYS_ONLY)) {
             for (int key : waypoint.getKeys()) {
                 keyPress(key);
             }
         }
 
-        if (waypoint.hasClickButtons() && mode != MacroMode.KEYS_ONLY) {
+        if (waypoint.hasClickButtons() && (mode == MacroMode.ALL || mode == MacroMode.CLICKS_ONLY)) {
             int mask = 0x0;
             for (int mouseButton : waypoint.getClickButtons()) {
                 if (mouseButton == MouseEvent.NOBUTTON) continue;
@@ -33,13 +33,13 @@ public class MacroRobot extends Robot {
             mousePress(mask);
         }
 
-        if (waypoint.hasReleaseKeys() && mode != MacroMode.MOUSE_ONLY) {
+        if (waypoint.hasReleaseKeys() && (mode == MacroMode.ALL || mode == MacroMode.KEYS_ONLY)) {
             for (int key : waypoint.getReleaseKeys()) {
                 keyRelease(key);
             }
         }
 
-        if (waypoint.hasReleaseButtons() && mode != MacroMode.KEYS_ONLY) {
+        if (waypoint.hasReleaseButtons() && (mode == MacroMode.ALL || mode == MacroMode.MOUSE_ONLY)) {
             int mask = 0x0;
             for (int mouseButton : waypoint.getReleaseButtons()) {
                 if (mouseButton == MouseEvent.NOBUTTON) continue;

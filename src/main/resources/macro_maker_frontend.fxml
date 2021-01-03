@@ -49,11 +49,7 @@
                       <Font name="Calibri" size="18.0" fx:id="x1" />
                     </font>
                   </Label>
-                        <ScrollPane fx:id="macrosBox" fitToHeight="true" fitToWidth="true" prefHeight="221.0" prefWidth="270.0">
-                           <content>
-                              <TableView fx:id="macroTable" prefHeight="200.0" prefWidth="200.0" />
-                           </content>
-                        </ScrollPane>
+                        <TableView fx:id="macroTable" prefHeight="304.0" prefWidth="254.0" />
                      </children>
                   </VBox>
                   <VBox prefHeight="301.0" prefWidth="222.0">

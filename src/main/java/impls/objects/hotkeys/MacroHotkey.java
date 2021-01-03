@@ -10,7 +10,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class MacroHotkey extends Hotkey implements Serializable {
@@ -24,7 +23,7 @@ public class MacroHotkey extends Hotkey implements Serializable {
     private transient TimeSeriesInterpolator interpolator;
     private transient boolean running;
 
-    private MacroMode mode = MacroMode.BOTH;
+    private MacroMode mode = MacroMode.ALL;
     private List<Waypoint> waypoints;
     private String name;
     private int loops;
@@ -158,7 +157,7 @@ public class MacroHotkey extends Hotkey implements Serializable {
         for (long i = 0; i <= maxTime; i += interval) {
             if (!running) break;
 
-            if (mode != MacroMode.KEYS_ONLY) {
+            if (mode == MacroMode.ALL || mode == MacroMode.MOUSE_ONLY) {
                 if (i >= delayedUntil) coords = interpolator.interpolate(i, linear);
                 robot.mouseMove(coords[0], coords[1]);
             }

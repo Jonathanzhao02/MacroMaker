@@ -20,10 +20,13 @@ public class MacroEditMenuController {
     public RadioButton mouseOnlyRadio;
 
     @FXML
+    public RadioButton clicksOnlyRadio;
+
+    @FXML
     public RadioButton keysOnlyRadio;
 
     @FXML
-    public RadioButton bothRadio;
+    public RadioButton allRadio;
 
     @FXML
     public Button editButton;
@@ -42,8 +45,9 @@ public class MacroEditMenuController {
         nameLabel.setText(macro.getName());
 
         switch (macro.getMode()) {
-            case BOTH -> bothRadio.setSelected(true);
+            case ALL -> allRadio.setSelected(true);
             case KEYS_ONLY -> keysOnlyRadio.setSelected(true);
+            case CLICKS_ONLY -> clicksOnlyRadio.setSelected(true);
             case MOUSE_ONLY -> mouseOnlyRadio.setSelected(true);
         }
 
@@ -52,13 +56,18 @@ public class MacroEditMenuController {
             e.consume();
         });
 
+        clicksOnlyRadio.setOnAction(e -> {
+            this.macro.setMode(MacroMode.CLICKS_ONLY);
+            e.consume();
+        });
+
         keysOnlyRadio.setOnAction(e -> {
             this.macro.setMode(MacroMode.KEYS_ONLY);
             e.consume();
         });
 
-        bothRadio.setOnAction(e -> {
-            this.macro.setMode(MacroMode.BOTH);
+        allRadio.setOnAction(e -> {
+            this.macro.setMode(MacroMode.ALL);
             e.consume();
         });
 

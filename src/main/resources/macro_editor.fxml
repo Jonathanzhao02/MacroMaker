@@ -20,8 +20,9 @@
             <ToggleGroup fx:id="macroMode" />
          </toggleGroup>
       </RadioButton>
+      <RadioButton fx:id="clicksOnlyRadio" mnemonicParsing="false" text="Clicks Only" toggleGroup="$macroMode" />
       <RadioButton fx:id="keysOnlyRadio" mnemonicParsing="false" text="Keys Only" toggleGroup="$macroMode" />
-      <RadioButton fx:id="bothRadio" mnemonicParsing="false" selected="true" text="Both" toggleGroup="$macroMode" />
+      <RadioButton fx:id="allRadio" mnemonicParsing="false" selected="true" text="All" toggleGroup="$macroMode" />
       <Button fx:id="editButton" mnemonicParsing="false" text="Edit" />
       <Button fx:id="deleteButton" mnemonicParsing="false" text="Delete" />
    </children>
