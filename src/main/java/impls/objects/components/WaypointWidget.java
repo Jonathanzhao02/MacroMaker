@@ -100,6 +100,7 @@ public class WaypointWidget extends Circle {
             WaypointEditMenuController controller = loader.getController();
             controller.initData(waypoint, this, inhibitor);
 
+            editStage.setTitle("Waypoint Editor");
             editStage.show();
         } catch (IOException e) {
             System.out.println("COULD NOT LOAD EDIT MENU");

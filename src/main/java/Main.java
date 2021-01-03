@@ -22,15 +22,14 @@ public class Main extends Application {
         Parent primaryRoot = loader.load();
         MainController controller = loader.getController();
         primaryStage.setScene(new Scene(primaryRoot));
+        primaryStage.setTitle("Macro Maker");
         primaryStage.show();
         primaryStage.setOnCloseRequest(event -> {
             try {
-                System.out.println("QUITTING");
+                System.out.println("Quitting");
                 controller.saveMacros();
                 GlobalScreen.unregisterNativeHook();
-                Platform.runLater(() -> {
-                    System.exit(0);
-                });
+                Platform.runLater(() -> System.exit(0));
                 Platform.exit();
             } catch (NativeHookException nativeHookException) {
                 nativeHookException.printStackTrace();
