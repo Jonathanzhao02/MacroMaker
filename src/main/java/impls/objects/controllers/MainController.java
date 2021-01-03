@@ -143,13 +143,16 @@ public class MainController {
         macroTable.setItems(macros);
 
         // TODO:
-        // IMPROVE WAYPOINT DISPLAY
-        // on loading macros from file, initialize settings, transient properties
         // MACRO PIPING?
         // BETTER SETTINGS SETTING (more intuitive, new scene entirely?)
+        // on loading macros from file, initialize settings, transient properties
 
         macros.addListener((ListChangeListener<? super MacroHotkey>) c -> {
             Platform.runLater(() -> macroEditorBox.getChildren().clear());
+        });
+
+        macroTable.addEventHandler(TableColumn.CellEditEvent.ANY, e -> {
+            macroEditorBox.getChildren().clear();
         });
 
         macroTable.addEventHandler(SelectionEvent.SELECTION_EVENT, e -> {

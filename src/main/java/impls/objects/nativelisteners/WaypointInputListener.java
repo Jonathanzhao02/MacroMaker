@@ -46,9 +46,9 @@ public class WaypointInputListener implements NativeMouseInputListener, NativeKe
         if (timestamp < bufferTime) return;
         Waypoint waypoint = createWaypoint(timestamp);
         waypoint.setLocation(e.getPoint());
-        int[] button = new int[5];
-        button[0] = NativeEnumMapper.nativeToJavaMouse(e.getButton());
-        waypoint.setMouseButtons(button);
+        List<Integer> buttons = new LinkedList<>();
+        buttons.add(NativeEnumMapper.nativeToJavaMouse(e.getButton()));
+        waypoint.setClickButtons(buttons);
         // System.out.println("Mouse Pressed: " + e.getButton());
     }
 
@@ -58,9 +58,9 @@ public class WaypointInputListener implements NativeMouseInputListener, NativeKe
         if (timestamp < bufferTime) return;
         Waypoint waypoint = createWaypoint(timestamp);
         waypoint.setLocation(e.getPoint());
-        int[] button = new int[5];
-        button[0] = NativeEnumMapper.nativeToJavaMouse(e.getButton());
-        waypoint.setReleaseMouseButtons(button);
+        List<Integer> buttons = new LinkedList<>();
+        buttons.add(NativeEnumMapper.nativeToJavaMouse(e.getButton()));
+        waypoint.setReleaseButtons(buttons);
         // System.out.println("Mouse Released: " + e.getButton());
     }
 

@@ -10,10 +10,10 @@ public class Waypoint {
     private Point location;
     private List<Integer> keys;
     private List<Integer> nativeKeys;
-    private int[] mouseButtons;
+    private List<Integer> clickButtons;
     private List<Integer> releaseKeys;
     private List<Integer> nativeReleaseKeys;
-    private int[] releaseMouseButtons;
+    private List<Integer> releaseButtons;
     private int duration;
     private int delay;
     private long timestamp;
@@ -121,63 +121,57 @@ public class Waypoint {
     }
 
     public boolean isMouseOnly() {
-        return !(hasKeys() || hasReleaseKeys() || hasMouseButtons() || hasReleaseMouseButtons() || isDelayed());
+        return !(hasKeys() || hasReleaseKeys() || hasClickButtons() || hasReleaseButtons() || isDelayed());
     }
 
     public boolean hasKeys() {
         return keys != null && !keys.isEmpty();
     }
 
-    public boolean hasMouseButton(int button) {
-        for (int mouseButton : mouseButtons) {
+    public boolean hasClickButton(int button) {
+        if (!hasClickButtons()) return false;
+        for (int mouseButton : clickButtons) {
             if (mouseButton == button) return true;
         }
 
         return false;
     }
 
-    public boolean hasMouseButtons() {
-        return mouseButtons != null && mouseButtons.length > 0;
+    public boolean hasClickButtons() {
+        return clickButtons != null && !clickButtons.isEmpty();
     }
 
     public boolean hasReleaseKeys() {
         return releaseKeys != null && !releaseKeys.isEmpty();
     }
 
-    public boolean hasReleaseMouseButton(int button) {
-        for (int mouseButton : releaseMouseButtons) {
+    public boolean hasReleaseButton(int button) {
+        if (!hasReleaseButtons()) return false;
+        for (int mouseButton : releaseButtons) {
             if (mouseButton == button) return true;
         }
 
         return false;
     }
 
-    public boolean hasReleaseMouseButtons() {
-        return releaseMouseButtons != null && releaseMouseButtons.length > 0;
+    public boolean hasReleaseButtons() {
+        return releaseButtons != null && !releaseButtons.isEmpty();
     }
 
-    public void setMouseButtons(int[] mouseButtons) {
-        this.mouseButtons = mouseButtons;
+    public void setClickButtons(List<Integer> mouseButtons) {
+        this.clickButtons = mouseButtons;
+    }
+    
+    public List<Integer> getClickButtons() {
+        return clickButtons;
     }
 
-    public void clearMouseButtons() {
-        this.mouseButtons = null;
+    public void setReleaseButtons(List<Integer> mouseButtons) {
+        this.releaseButtons = mouseButtons;
     }
-
-    public int[] getMouseButtons() {
-        return mouseButtons;
-    }
-
-    public void setReleaseMouseButtons(int[] mouseButtons) {
-        this.releaseMouseButtons = mouseButtons;
-    }
-
-    public void clearReleaseMouseButtons() {
-        this.releaseMouseButtons = null;
-    }
-
-    public int[] getReleaseMouseButtons() {
-        return releaseMouseButtons;
+    
+    public List<Integer> getReleaseButtons() {
+        return releaseButtons;
     }
 
     public static int getDelayThreshold() {

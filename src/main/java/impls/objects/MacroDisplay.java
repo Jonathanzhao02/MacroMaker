@@ -39,7 +39,6 @@ public class MacroDisplay {
                 }
 
                 stage.close();
-                root.getChildren().clear();
                 macro = null;
             }
         });
@@ -65,12 +64,13 @@ public class MacroDisplay {
 
     public void displayMacro(MacroHotkey macro) {
         this.macro = macro;
-        root.getChildren().clear();
-        root.getChildren().add(canvas);
+        root.getChildren().setAll(canvas);
 
         // TODO:
         // VISUAL EDITING
-        // FIGURE OUT ADDING PRESS/RELEASE KEYS, MOUSE BUTTONS
+        // IMPROVE WAYPOINT DISPLAY
+        // add table of waypoints, selection pushes selected waypoint to front
+        // add border around selected waypoint
 
         LinearColorGradient gradient = new LinearColorGradient(Color.RED, Color.VIOLET);
         gradient.addPoint(1.0 / 6, Color.ORANGE);

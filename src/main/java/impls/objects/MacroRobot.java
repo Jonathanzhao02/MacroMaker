@@ -24,9 +24,9 @@ public class MacroRobot extends Robot {
             }
         }
 
-        if (waypoint.hasMouseButtons() && mode != MacroMode.KEYS_ONLY) {
+        if (waypoint.hasClickButtons() && mode != MacroMode.KEYS_ONLY) {
             int mask = 0x0;
-            for (int mouseButton : waypoint.getMouseButtons()) {
+            for (int mouseButton : waypoint.getClickButtons()) {
                 if (mouseButton == MouseEvent.NOBUTTON) continue;
                 mask |= InputEvent.getMaskForButton(mouseButton);
             }
@@ -39,9 +39,9 @@ public class MacroRobot extends Robot {
             }
         }
 
-        if (waypoint.hasReleaseMouseButtons() && mode != MacroMode.KEYS_ONLY) {
+        if (waypoint.hasReleaseButtons() && mode != MacroMode.KEYS_ONLY) {
             int mask = 0x0;
-            for (int mouseButton : waypoint.getReleaseMouseButtons()) {
+            for (int mouseButton : waypoint.getReleaseButtons()) {
                 if (mouseButton == MouseEvent.NOBUTTON) continue;
                 mask |= InputEvent.getMaskForButton(mouseButton);
             }

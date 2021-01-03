@@ -44,6 +44,7 @@ public class MacroTableWrapper {
 
             v.getRowValue().setName(v.getNewValue());
             table.getSelectionModel().clearSelection();
+            table.fireEvent(v);
         });
 
         keyCol.setEditable(true);

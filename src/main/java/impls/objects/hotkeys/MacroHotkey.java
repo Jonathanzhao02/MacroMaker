@@ -209,7 +209,7 @@ public class MacroHotkey extends Hotkey implements Serializable {
     public void addEmptyWaypoint(int idx) {
         int before = idx - 1;
         int after = idx;
-        if (before <= 0 || after >= waypoints.size() - 1) return;
+        if (before < 0 || after >= waypoints.size()) return;
 
         Waypoint current = new Waypoint(), prev, next;
 

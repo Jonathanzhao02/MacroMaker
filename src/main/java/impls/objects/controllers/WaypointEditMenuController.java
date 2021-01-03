@@ -8,6 +8,7 @@ import main.java.impls.objects.events.SelectionEvent;
 
 import java.awt.Point;
 import java.awt.event.MouseEvent;
+import java.util.*;
 
 public class WaypointEditMenuController {
     @FXML
@@ -66,12 +67,17 @@ public class WaypointEditMenuController {
 
     private Waypoint waypoint;
     private WaypointWidget parent;
+    private Map<CheckBox, Integer> boxToClickMap = new HashMap<>();
+    private Map<CheckBox, Integer> boxToReleaseMap = new HashMap<>();
 
     public void initialize() {
 
     }
 
     public void initData(Waypoint waypoint, WaypointWidget parent) {
+        // TODO:
+        // FIGURE OUT ADDING PRESS/RELEASE KEYS
+
         this.waypoint = waypoint;
         this.parent = parent;
 
@@ -93,6 +99,30 @@ public class WaypointEditMenuController {
         saveButton.setOnAction(e -> {
             validateFields();
         });
+
+        boxToClickMap.put(leftClickCheckBox, MouseEvent.BUTTON1);
+        boxToClickMap.put(middleClickCheckBox, MouseEvent.BUTTON3);
+        boxToClickMap.put(rightClickCheckBox, MouseEvent.BUTTON2);
+        boxToClickMap.put(forwardClickCheckBox, 4);
+        boxToClickMap.put(backClickCheckBox, 5);
+
+        boxToReleaseMap.put(leftReleaseCheckBox, MouseEvent.BUTTON1);
+        boxToReleaseMap.put(middleReleaseCheckBox, MouseEvent.BUTTON3);
+        boxToReleaseMap.put(rightReleaseCheckBox, MouseEvent.BUTTON2);
+        boxToReleaseMap.put(forwardReleaseCheckBox, 4);
+        boxToReleaseMap.put(backReleaseCheckBox, 5);
+
+        leftClickCheckBox.setSelected(waypoint.hasClickButton(MouseEvent.BUTTON1));
+        middleClickCheckBox.setSelected(waypoint.hasClickButton(MouseEvent.BUTTON3));
+        rightClickCheckBox.setSelected(waypoint.hasClickButton(MouseEvent.BUTTON2));
+        forwardClickCheckBox.setSelected(waypoint.hasClickButton(4));
+        backClickCheckBox.setSelected(waypoint.hasClickButton(5));
+
+        leftReleaseCheckBox.setSelected(waypoint.hasReleaseButton(MouseEvent.BUTTON1));
+        middleReleaseCheckBox.setSelected(waypoint.hasReleaseButton(MouseEvent.BUTTON3));
+        rightReleaseCheckBox.setSelected(waypoint.hasReleaseButton(MouseEvent.BUTTON2));
+        forwardReleaseCheckBox.setSelected(waypoint.hasReleaseButton(4));
+        backReleaseCheckBox.setSelected(waypoint.hasReleaseButton(5));
     }
 
     private void validateFields() {
@@ -153,9 +183,25 @@ public class WaypointEditMenuController {
             waypoint.setDelay(delay);
             waypoint.setLocation(new Point((int) x, (int) y));
             waypoint.setDuration(duration);
+            setCheckBoxProperties();
             parent.closeEditMenu();
         }
 
+    }
+
+    private void setCheckBoxProperties() {
+        List<Integer> clickButtons = new LinkedList<>();
+        boxToClickMap.forEach((bx, btn) -> {
+            if (bx.isSelected()) clickButtons.add(btn);
+        });
+
+        List<Integer> releaseButtons = new LinkedList<>();
+        boxToReleaseMap.forEach((bx, btn) -> {
+            if (bx.isSelected()) releaseButtons.add(btn);
+        });
+
+        waypoint.setClickButtons(clickButtons);
+        waypoint.setReleaseButtons(releaseButtons);
     }
 
     private void appendErrorText(String text) {
